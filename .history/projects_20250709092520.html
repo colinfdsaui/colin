@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Projects – Colin Fried</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="scripts/main.js" defer></script>
+
+  <style>
+    /* Make sure to CLOSE this style tag! */
+    #flipbook {
+      width: 100%;
+      height: 100%;
+      transition: margin-left 0.25s ease-out;
+      margin: 0 auto;
+    }
+    
+  </style>
+  <!-- Global MathJax config -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['\\[', '\\]'], ['$$', '$$']],
+    processEscapes: true
+  },
+  svg: { fontCache: 'global' }
+};
+</script>
+
+<!-- Load MathJax v3 -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
+</head>
+
+<body>
+  <!-- HEADER & NAV belong in <body>, not in <head> -->
+  <header>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../website.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a class="active" href="projects.html">Projects</a></li>
+        <li><a href="test.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+    
+<main>
+  <div class="shelf">
+    <div class="book-grid">
+      <a class="book-item" href="goodnight-sweet.html">  
+        <img src="pages/dust_jacket_front.png" alt="Goodnight Sweet">
+        <span class="book-title"></span>
+      </a> 
+    </div>
+  </div>
+</main>
+
+  <footer>©2025 Colin Fried</footer>
+</body>
+</html>

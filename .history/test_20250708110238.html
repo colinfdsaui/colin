@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Flipbook with Full‑Screen Zoom + Scroll</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 1rem;
+    }
+
+    /* Flipbook wrapper */
+    #flipbook-wrapper {
+      width: 800px;
+      height: 600px;
+      margin: 2rem auto;
+      position: relative;
+      border: 1px solid #ccc;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    /* Mask (page‑1 illusion) */
+    #mask {
+      position: absolute; top:0; left:0; right:0; bottom:0;
+      pointer-events: none;
+      background: linear-gradient(
+        to right,
+        #fff 0%, rgba(255,255,255,0) 40%,
+        rgba(255,255,255,0) 60%, #fff 100%
+      );
+      display: none;
+    }
+
+    /* Controls */
+    .controls {
+      margin-top: 1rem;
+    }
+    .controls button {
+      background-color: #61a0ff; /* Base color */
+  background-image: linear-gradient(to bottom, #84b8ff, #4f94ff); /* Gradient for depth */
+  border: 1px solid #0056b3;
+  border-radius: 5px;
+  padding: 10px 20px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    .controls button:hover {
+      background-image: linear-gradient(to bottom, #4f94ff, #84b8ff); /* Reverse gradient on hover */
+  border-color: #004699;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .controls button:active {
+  background-color: #4f94ff; /* Darker on click */
+  background-image: none;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  transform: translateY(1px); /* Slight push down on click */
+}
+/* Shine effect */
+.controls button:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+  pointer-events: none; /* Allow clicks to pass through */
+}
+    /* Turn.js pages */
+    #flipbook .page {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      background: grey;
+    }
+    #flipbook .page img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      cursor: pointer;
+    }
+
+    /* Full‑screen zoom modal */
+    #zoom-modal {
+      display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgb(0, 0, 0.8);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;     /* allow scrollbars */
+  cursor: zoom-out;
+    }
+    #zoom-modal img {
+       /* Let JS set explicit size */
+  width: 150%;
+  height: 150%;
+  transform: translate(-15%);
+  object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Flipbook (2 pages)</h1>
+  <div id="flipbook-wrapper">
+    <div id="flipbook"></div>
+    <div id="mask"></div>
+  </div>
+
+  <div class="controls">
+    <button id="prev"> ❮</button>
+    <button id="next"> ❯</button>
+  </div>
+
+  <!-- Zoom Modal -->
+  <div id="zoom-modal">
+    <img id="zoom-img" src="" alt="Zoomed Page"/>
+  </div>
+
+  <!-- jQuery & Turn.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/0.11/turn.min.js"></script>
+  <script>
+    $(function() {
+      const pages = [
+        'images/resume-pages-0.png',
+        'images/resume-pages-1.png'
+      ];
+      const $fb     = $('#flipbook');
+      const $mask   = $('#mask');
+      const $modal  = $('#zoom-modal');
+      const $zoomImg = $('#zoom-img');
+      let currentZoomIndex = null;
+
+      // Inject pages
+      pages.forEach(src => {
+        $fb.append(`<div class="page"><img src="${src}"></div>`);
+      });
+
+      // Initialize in single‑page mode
+      $fb.turn({
+        width: 800,
+        height: 600,
+        display: 'double',
+        page: 1,
+        autoCenter: false,
+        gradients: true,
+        elevation: 50,
+        acceleration: true        
+      });
+
+      // Mask on page 1
+      function updateMask(page) {
+        $mask.toggle(page === 1);
+      }
+      $fb.on('turned', (e, page) => updateMask(page));
+      updateMask(1);
+
+      // Prev/Next controls
+      $('#prev').click(() => $fb.turn('previous'));
+      $('#next').click(() => $fb.turn('next'));
+      $(document).keydown(e => {
+        if (e.key === 'ArrowLeft')  $fb.turn('previous');
+        if (e.key === 'ArrowRight') $fb.turn('next');
+      });
+
+      // Full‑screen zoom modal
+      $fb.on('click', '.page img', function(e) {
+        e.stopPropagation();
+        $zoomImg.attr('src', this.src);
+        $modal.show();  // shows as flex with scrollbars
+      });
+      $modal.on('click', () => $modal.hide());
+
+      $(document).on('keydown', function(e) {
+    if (e.which === 27 && $modal.is(':visible')) {  // 27 = Esc
+      $modal.hide();
+    }
+    
+
+    });
+});
+
+  </script>
+</body>
+</html>

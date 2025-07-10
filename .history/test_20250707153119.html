@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Simplified Flipbook</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 1rem;
+    }
+    /* Container */
+    #flipbook {
+      width: 800px;
+      height: 600px;
+
+      position: relative;
+      background: #fff;
+    }
+    /* Each page: Turn.js will absolutely position them */
+    #flipbook .page {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    /* Zoomable images */
+    #flipbook .page img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+      cursor: zoom-in;
+    }
+    #flipbook .page img.zoomed {
+      transform: scale(2);
+      cursor: zoom-out;
+    }
+    /* Center page 1 in single‑page mode */
+    #flipbook.single-page .page:nth-child(1) {
+      left: 100%;
+      right: 100%
+      transform: translateX(-50%);
+    }
+    /* Hide page 2 in single‑page mode */
+    #flipbook.single-page .page:nth-child(2) {
+      display: none;
+    }
+    /* Controls */
+    .controls {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .controls button {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border: 1px solid #888;
+      background: #f0f0f0;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .controls button:hover {
+      background: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Flipbook (2‑pages)</h1>
+  <div id="flipbook"></div>
+
+  <div class="controls">
+    <button id="prev">◀ Prev</button>
+    <button id="next">Next ▶</button>
+  </div>
+
+  <!-- jQuery & Turn.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/0.11/turn.min.js"></script>
+  <script>
+    $(function() {
+      const pages = [
+        'images/resume-pages-0.png',
+        'images/resume-pages-1.png'
+      ];
+      const $fb = $('#flipbook');
+
+      // 1) Inject pages (they auto-stack via Turn.js)
+      pages.forEach(src => {
+        $fb.append(`<div class="page"><img src="${src}"></div>`);
+      });
+
+      // 2) Init in double mode, starting at page 1
+      $fb.turn({
+        width:  800,
+        height: 600,
+        display: 'double',
+        page:    1,
+        autoCenter: true,
+        gradients:  true,
+        elevation:  50
+      });
+
+      // 3) Center page 1 by toggling a class on turn
+      $fb.on('turned', (e, page) => {
+        $fb.toggleClass('single-page', page === 1);
+      });
+
+      // Fire once on load to center page 1
+      $fb.trigger('turned', [1]);
+
+      // 4) Prev/Next buttons
+      $('#prev').click(() => $fb.turn('previous'));
+      $('#next').click(() => $fb.turn('next'));
+
+      // 5) Arrow‑key support
+      $(document).keydown(e => {
+        if      (e.key === 'ArrowLeft')  $fb.turn('previous');
+        else if (e.key === 'ArrowRight') $fb.turn('next');
+      });
+
+      // 6) Zoom on image click (no interference with flipping)
+      $fb.on('click', '.page img', function(e) {
+        e.stopPropagation();
+        $(this).toggleClass('zoomed');
+      });
+    });
+  </script>
+</body>
+</html>

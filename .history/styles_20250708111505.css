@@ -1,0 +1,104 @@
+/* ====================
+   Global & layout
+   ==================== */
+   /* 1) Define your palette once, at the top of your main stylesheet */
+:root {
+  /* Brand colors */
+  --color-primary:   #1e90ff;
+  --color-secondary: #ff6347;
+  --color-bg:        #fdfdfd;
+  --color-text:      #333333;
+
+  /* Accent / utility colors */
+  --color-success:   #28a745;
+  --color-warning:   #ffc107;
+  --color-error:     #dc3545;
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color:            var(--color-text);
+}
+
+header, footer {
+  background: #333;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+nav {
+  background: #444;
+}
+nav .nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+nav .nav-links li {
+  margin: 0 1rem;
+}
+nav .nav-links a {
+  color: white;
+  text-decoration: none;
+}
+nav .nav-links .active {
+  text-decoration: underline;
+}
+
+main {
+  padding: 1rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+footer {
+  font-size: 0.9rem;
+}
+
+/* ====================
+   Flipbook container
+   ==================== */
+#flipbook {
+  width: 800px;
+  height: 600px;
+  margin: 2rem auto;
+  position: relative;
+  background: #fff;
+}
+
+/* Default two‑page layout; Turn.js manages positioning */
+#flipbook .page {
+  /* no manual float/width needed */
+}
+
+/* Single‑page hack: when .single-page, center Page 1 */
+#flipbook.single-page .page:nth-child(1) {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;   /* each page is half the container in double mode */
+}
+
+/* Hide the second page entirely when single */
+#flipbook.single-page .page:nth-child(2) {
+  display: none;
+}
+
+/* Image zoom */
+#flipbook .page img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  cursor: zoom-in;
+}
+#flipbook .page img.zoomed {
+  transform: scale(2);
+  cursor: zoom-out;
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Flipbook with Buttons</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+  <style>
+    body { font-family: sans-serif; text-align:center; margin:1rem; }
+    #flipbook {
+      width: 800px; height: 600px;
+      margin: 2rem auto; border:1px solid #ccc;
+    }
+    #flipbook .page { background:#fff; }
+    #flipbook .page img {
+      width:100%; height:100%; object-fit:contain;
+      pointer-events:none;
+    }
+    .flipbook-controls {
+      margin-top:1rem; display:flex; justify-content:center; gap:1rem;
+    }
+    .flipbook-controls button {
+      padding:0.5rem 1rem; font-size:1rem; cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>My Flipbook</h1>
+  <div id="flipbook"></div>
+
+  <div class="flipbook-controls">
+    <button id="prev-page">◀ Prev</button>
+    <button id="next-page">Next ▶</button>
+  </div>
+
+  <!-- 1) jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- 2) Turn.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/0.11/turn.min.js"></script>
+
+  <script>
+    $(function() {
+      const totalPages = 2;      // <-- change to your actual count
+      const $fb = $('#flipbook');
+
+      // 1) Append pages
+      for (let i = 0; i < totalPages; i++) {
+        $fb.append(`
+          <div class="page">
+            <img src="images/resume-pages-${i}.png" alt="Page ${i+1}">
+          </div>
+        `);
+      }
+
+      // 2) Initialize Turn.js
+      console.log('Initializing turn.js…');
+      $fb.turn({
+        width:  800,
+        height: 600,
+        autoCenter: true,
+        gradients: true,
+        elevation: 50
+      });
+
+      // 3) Button handlers (with debug logs)
+      $('#prev-page').on('click', function() {
+        console.log('Prev‑button clicked');
+        $fb.turn('previous');
+      });
+      $('#next-page').on('click', function() {
+        console.log('Next‑button clicked');
+        $fb.turn('next');
+      });
+
+      // 4) Arrow keys (already working)
+      $(document).on('keydown', function(e) {
+        if (e.key === 'ArrowLeft')  $fb.turn('previous');
+        if (e.key === 'ArrowRight') $fb.turn('next');
+      });
+    });
+  </script>
+</body>
+</html>

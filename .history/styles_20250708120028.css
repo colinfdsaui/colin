@@ -1,0 +1,183 @@
+/* ====================
+   Global & layout
+   ==================== */
+/* 1) Define your palette once, at the top of your main stylesheet */
+:root {
+  /* ─── Aqua Palette ───────────────────────────────────────────────────────── */
+  /* Light backgrounds */
+  --aqua-bg-primary:      #c0d9ea; /* window background */
+  --aqua-bg-secondary:    #e3eff7; /* sidebar / panels */
+  --aqua-bg-highlight:    #fffffd; /* key UI surfaces */
+
+  /* Accent blues */
+  --aqua-accent:          #8db9e3; /* buttons, active tabs */
+  --aqua-accent-dark:     #6b8cb4; /* hover, active state */
+
+  /* Text */
+  --aqua-text-primary:    #000000; /* body text */
+  --aqua-text-secondary:  #3b3b3b; /* captions, secondary labels */
+  --aqua-text-inverse:    #ffffff; /* on blue buttons, etc */
+
+  /* Borders / dividers */
+  --aqua-border:          #a0c0d2;
+
+  /* Shadows (optional) */
+  --aqua-shadow:          rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Lucida Grande", -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--aqua-bg-primary);
+  color:            var(--aqua-text-primary);
+}
+
+header,
+footer {
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.6),
+    var(--aqua-bg-secondary)
+  );
+  border-bottom: 1px solid var(--aqua-border);
+  box-shadow:    0 1px 3px var(--aqua-shadow);
+}
+
+main {
+  padding:    1rem;
+  max-width:  1000px;
+  margin:     auto;
+}
+
+footer {
+  font-size: 0.9rem;
+  color:     var(--aqua-text-secondary);
+}
+
+/* ====================
+   Typography & Links
+   ==================== */
+a {
+  color:           var(--aqua-accent-dark);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ====================
+   Buttons & Panels
+   ==================== */
+button {
+  background-color: var(--aqua-accent);
+  color:            var(--aqua-text-inverse);
+  border:           1px solid var(--aqua-accent-dark);
+  border-radius:    4px;
+  padding:          0.5em 1em;
+  cursor:           pointer;
+  box-shadow:       0 1px 2px var(--aqua-shadow);
+  font-family:      inherit;
+}
+
+button:hover {
+  background-color: var(--aqua-accent-dark);
+}
+
+.panel {
+  background-color: var(--aqua-bg-highlight);
+  border:           1px solid var(--aqua-border);
+  padding:          1em;
+  border-radius:    6px;
+}
+
+/* 1. Mark your clickable images with a class */
+img.clickable {
+  cursor: default;               /* always stay arrow */
+  transition:
+    transform 0.15s ease-out,
+    filter    0.15s ease-out;
+}
+
+/* 2. On hover, give it some “pop” */
+img.clickable:hover {
+  transform: scale(1.05);        /* grow a bit */
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2))
+          brightness(1.05);      /* shadow + slight brighten */
+}
+
+/* ====================
+   Flipbook container
+   ==================== */
+#flipbook,
+#flipbook-wrapper {
+  width:      800px;
+  height:     600px;
+  margin:     2rem auto;
+  /*position:   relative;*/
+  overflow:   hidden;
+  background: var(--aqua-bg-highlight);
+  border:     1px solid var(--aqua-border);
+  box-shadow: 0 2px 4px var(--aqua-shadow);
+}
+
+/* Default two‑page layout; Turn.js manages positioning */
+#flipbook .page {
+  /*position: absolute;*/
+  width:    50%;
+  height:   100%;
+  overflow: hidden;
+  background: var(--aqua-bg-highlight);
+  border-right: 1px solid var(--aqua-border);
+}
+
+#flipbook .page:last-child {
+  border-right: none;
+}
+
+/* Page images */
+#flipbook .page img {
+  width:       100%;
+  height:      100%;
+  /*object-fit:  contain;*/
+  transition:  transform 0.3s ease;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2))
+          brightness(1.05);      /* shadow + slight brighten */
+}
+
+/* 1. Mark your clickable images with a class */
+#flipbook .page img.clickable {
+  transition:
+    transform 0.15s ease-out,
+    filter    0.15s ease-out;
+}
+
+/* 2. On hover, give it some “pop” */
+#flipbook .page img.clickable:hover {
+  transform: scale(1.05);        /* grow a bit */
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2))
+          brightness(1.05);      /* shadow + slight brighten */
+}
+
+#flipbook .page img.zoomed {
+  transform: scale(2);
+}
+
+/* Full‑screen zoom modal */
+#zoom-modal {
+  position:      fixed;
+  inset:         10;
+  background:    rgba(0, 0, 0, 0.8);
+  z-index:       9999;
+  align-items:   center;
+  justify-content: center;
+  overflow:      auto;
+}
+
+#zoom-modal img {
+  width:        150%;
+  height:       150%;
+  transform:    translate(-15%);
+  object-fit:   contain;
+}

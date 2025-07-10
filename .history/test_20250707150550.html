@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Flipbook Demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+  <style>
+  #flipbook {
+    width: 800px; height: 600px; margin:2rem auto; border:1px solid #ccc;
+  }
+  #flipbook .page img { width:100%; height:100%; object-fit:contain; }
+  /* CSS toggles */
+  #flipbook.hide-spread .page:nth-child(2n) { display: none; }
+  #flipbook.show-spread .page:nth-child(2n) { display: block; }
+</style>
+
+<div id="flipbook"></div>
+
+<script>
+$(function() {
+  const $fb = $('#flipbook');
+  // add your two pages
+  [0,1].forEach(i => $fb.append(
+    `<div class="page"><img src="images/resume-pages-${i}.png"></div>`
+  ));
+  // init as double, page 1
+  $fb.turn({ width:800, height:600, display:'double', page:1, autoCenter:true });
+  // start “single”‑page by hiding right side
+  $fb.addClass('hide-spread');
+
+  // show spread once user turns past page 1
+  $fb.bind('turned', (e, page) => {
+    if (page > 1) {
+      $fb.removeClass('hide-spread').addClass('show-spread');
+    } else {
+      $fb.removeClass('show-spread').addClass('hide-spread');
+    }
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+const url = 'mydoc.pdf';
+const flipbook = document.getElementById('flipbook');
+
+// Load PDF
+pdfjsLib.getDocument(url).promise.then(pdf => {
+  const numPages = pdf.numPages;
+  // Create a canvas for each page
+  for (let i = 1; i <= numPages; ++i) {
+    const pageDiv = document.createElement('div');
+    pageDiv.className = 'page';
+    const canvas = document.createElement('canvas');
+    pageDiv.appendChild(canvas);
+    flipbook.appendChild(pageDiv);
+
+    // Render page into canvas
+    pdf.getPage(i).then(page => {
+      const viewport = page.getViewport({ scale: 1.5 });
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      page.render({ canvasContext: canvas.getContext('2d'), viewport });
+    });
+  }
+
+  // Initialize Turn.js (after canvases added)
+  $('#flipbook').turn({
+    width: 800,
+    height: 600,
+    autoCenter: true
+  });
+});

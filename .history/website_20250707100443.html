@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="styles.css">
+<!-- 1) PDF.js core library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.338/pdf.min.js"></script>
+<script>
+  // 2) Tell PDF.js where to find its worker script
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.338/pdf.worker.min.js";
+</script>
+
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My Website</title>
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<!-- Header / Nav -->
+<header>
+    <h1>Colin Fried</h1>
+    <nav>
+        <ul class="nav-links">
+            <li><a class="active" href="website.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="test.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Main Content-->
+<main>
+    <section id="hero">
+        <h2>Welcome!</h2>
+        <p>This is my new website.</p>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer>
+    <p> © 2025 Colin Fried</p>
+</footer>
+
+<body>
+</html>

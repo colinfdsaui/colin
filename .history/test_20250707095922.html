@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Flipbook Viewer Test – Colin Fried</title>
+
+  <!-- Basic page styles -->
+  <style>
+    body { font-family: sans-serif; margin: 1rem; }
+    #flipbook { 
+      width: 800px; 
+      height: 600px; 
+      margin: 2rem auto; 
+      border: 1px solid #ccc;
+      position: relative;
+    }
+    .fb-controls { text-align: center; margin-top: 1rem; }
+    .fb-controls button { margin: 0 .5rem; padding: .5rem 1rem; }
+  </style>
+
+  <!-- flipbook‑viewer CSS from unpkg -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/flipbook-viewer@1.6.1/dist/flipbook-viewer.css"
+  />
+</head>
+<body>
+
+  <h1>Flipbook Viewer Test</h1>
+
+  <!-- container that the viewer will mount into -->
+  <div id="flipbook"></div>
+
+  <!-- optional controls -->
+  <div class="fb-controls">
+    <button id="prev">◀ Prev</button>
+    <button id="zoom">🔍 Zoom</button>
+    <button id="next">Next ▶</button>
+  </div>
+
+  <!-- PDF.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.338/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.338/pdf.worker.min.js";
+  </script>
+
+  <!-- flipbook‑viewer init as an ES module -->
+  <script type="module">
+    import { init as flipbook } 
+      from "https://unpkg.com/flipbook-viewer@1.6.1/dist/flipbook-viewer.js";
+
+    // 1) Load the PDF once
+    const pdfUrl = "pdfs/GoodnightSweet2e.pdf";
+    const loadingTask = pdfjsLib.getDocument(pdfUrl).promise;
+
+    // 2) Wrap it in the minimal "book" API
+    const pdfBook = {
+      numPages: async () => (await loadingTask).numPages,
+      getPage: async (n, cb) => {
+        const pdf = await loadingTask;
+        const page = await pdf.getPage(n);
+        const vp = page.getViewport({ scale: 1.5 });
+        const canvas = document.createElement("canvas");
+        canvas.width = vp.width;
+        canvas.height = vp.height;
+        await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+        cb(canvas);
+      }
+    };
+
+    // 3) When DOM is ready, initialize
+    document.addEventListener("DOMContentLoaded", () => {
+      flipbook(pdfBook, "flipbook", {}, (err, viewer) => {
+        if (err) {
+          console.error("Flipbook init error:", err);
+          return;
+        }
+        console.log("Flipbook ready, pages:", viewer.page_count);
+
+        // wire up our buttons
+        document.getElementById("prev").onclick  = () => viewer.flip_back();
+        document.getElementById("next").onclick  = () => viewer.flip_forward();
+        document.getElementById("zoom").onclick  = () => viewer.zoom();
+      });
+    });
+  </script>
+
+</body>
+</html>

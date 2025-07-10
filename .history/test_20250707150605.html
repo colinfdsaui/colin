@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Flipbook Demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 1rem;
+    }
+    #flipbook {
+      width: 800px;
+      height: 600px;
+      margin: 2rem auto;
+      border: 1px solid #ccc;
+      background: #fff;
+    }
+    #flipbook .page {
+      background: #fff;
+    }
+    #flipbook .page img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
+    }
+    .flipbook-controls {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .flipbook-controls button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 1px solid #888;
+      background: #f0f0f0;
+      border-radius: 4px;
+    }
+    .flipbook-controls button:hover {
+      background: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>My Two‑Page Flipbook</h1>
+
+  <!-- Flipbook container -->
+  <div id="flipbook"></div>
+
+  <!-- Navigation buttons -->
+  <div class="flipbook-controls">
+    <button id="prev-page">◀ Prev</button>
+    <button id="next-page">Next ▶</button>
+  </div>
+
+  <!-- 1) jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- 2) Turn.js v0.11 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/0.11/turn.min.js"></script>
+
+  <script>
+    $(function() {
+      const totalPages = 2;          // your doc has exactly 2 pages
+      const $fb = $('#flipbook');
+
+      // 1) Add the two pages
+      for (let i = 0; i < totalPages; i++) {
+        $fb.append(`
+          <div class="page">
+            <img src="images/resume-pages-${i}.png" alt="Page ${i+1}">
+          </div>
+        `);
+      }
+
+      // 2) Initialize Turn.js in single‑page mode
+      $fb.turn({
+        width:  800,
+        height: 600,
+        autoCenter: true,
+        gradients:  true,
+        elevation:  50,
+        display:    'single',  // start showing only page 1
+        page:       1
+      });
+
+      // 3) When the user turns to page 2, switch to double‑page spread
+      $fb.bind('turned', function(e, page) {
+        if (page === 2) {
+          $fb.turn('display', 'double');
+        } else {
+          $fb.turn('display', 'single');
+        }
+      });
+
+      // 4) Prev/Next button handlers
+      $('#prev-page').on('click', () => $fb.turn('previous'));
+      $('#next-page').on('click', () => $fb.turn('next'));
+
+      // 5) Arrow‑key support
+      $(document).on('keydown', e => {
+        if (e.key === 'ArrowLeft')  $fb.turn('previous');
+        if (e.key === 'ArrowRight') $fb.turn('next');
+      });
+    });
+  </script>
+</body>
+</html>

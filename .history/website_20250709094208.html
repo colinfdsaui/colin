@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Website</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css"/>
+
+  <!-- Site JS (deferred) -->
+  <script src="scripts/main.js" defer></script>
+
+  <!-- Global MathJax config -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['\\[', '\\]'], ['$$', '$$']],
+        processEscapes: true
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <!-- Load MathJax v3 -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
+</head>
+
+<body>
+  <!-- Header / Nav -->
+  <header>
+    <nav>
+        <ul class="nav-links">
+            <li><a class="active" href="website.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="test.html">Contact</a></li>
+        </ul>
+        <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+    </nav>
+</header>
+
+  <!-- Main Content -->
+  <main>
+    <section id="hero">
+      <h1>Welcome!</h1>
+      <p>This is my new website.</p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 Colin Fried
+  </footer>
+</body>
+</html>

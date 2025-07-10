@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Flipbook with Full‑Screen Zoom + Scroll</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 1rem;
+    }
+
+    /* Flipbook wrapper */
+    #flipbook-wrapper {
+      width: 800px;
+      height: 600px;
+      margin: 2rem auto;
+      position: relative;
+      border: 1px solid #ccc;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    /* Mask (page‑1 illusion) */
+    #mask {
+      position: absolute; top:0; left:0; right:0; bottom:0;
+      pointer-events: none;
+      background: linear-gradient(
+        to right,
+        #fff 0%, rgba(255,255,255,0) 40%,
+        rgba(255,255,255,0) 60%, #fff 100%
+      );
+      display: none;
+    }
+
+    /* Controls */
+    .controls {
+      margin-top: 1rem;
+    }
+    .controls button {
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
+      cursor: pointer;
+      border: 1px solid #888;
+      background: rgb(77, 208, 223);
+      border-radius: 5px;
+      font-size: 1.2rem;
+    }
+    .controls button:hover {
+      background: rgb(115, 162, 224);
+    }
+
+    /* Turn.js pages */
+    #flipbook .page {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+    }
+    #flipbook .page img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      cursor: pointer;
+    }
+
+    /* Full‑screen zoom modal */
+    #zoom-modal {
+      display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.8);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;     /* allow scrollbars */
+  cursor: zoom-out;
+    }
+    #zoom-modal img {
+       /* Let JS set explicit size */
+  width: auto;
+  height: auto;
+  object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Flipbook (2 pages)</h1>
+  <div id="flipbook-wrapper">
+    <div id="flipbook"></div>
+    <div id="mask"></div>
+  </div>
+
+  <div class="controls">
+    <button id="prev">◀ Prev</button>
+    <button id="next">Next ▶</button>
+  </div>
+
+  <!-- Zoom Modal -->
+  <div id="zoom-modal">
+    <img id="zoom-img" src="" alt="Zoomed Page"/>
+  </div>
+
+  <!-- jQuery & Turn.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/0.11/turn.min.js"></script>
+  <script>
+    $(function() {
+      const pages = [
+        'images/resume-pages-0.png',
+        'images/resume-pages-1.png'
+      ];
+      const $fb     = $('#flipbook');
+      const $mask   = $('#mask');
+      const $modal  = $('#zoom-modal');
+      const $zoomImg = $('#zoom-img');
+
+      // Inject pages
+      pages.forEach(src => {
+        $fb.append(`<div class="page"><img src="${src}"></div>`);
+      });
+
+      // Initialize in single‑page mode
+      $fb.turn({
+        width: 800,
+        height: 600,
+        display: 'single',
+        page: 1,
+        autoCenter: false,
+        gradients: true,
+        elevation: 50
+      });
+
+      // Mask on page 1
+      function updateMask(page) {
+        $mask.toggle(page === 1);
+      }
+      $fb.on('turned', (e, page) => updateMask(page));
+      updateMask(1);
+
+      // Prev/Next controls
+      $('#prev').click(() => $fb.turn('previous'));
+      $('#next').click(() => $fb.turn('next'));
+      $(document).keydown(e => {
+        if (e.key === 'ArrowLeft')  $fb.turn('previous');
+        if (e.key === 'ArrowRight') $fb.turn('next');
+      });
+
+      // Full‑screen zoom modal
+      $fb.on('click', '.page img', function(e) {
+        e.stopPropagation();
+        $zoomImg.attr('src', this.src);
+        $modal.show();  // shows as flex with scrollbars
+      });
+      $modal.on('click', () => $modal.hide());
+    });
+  </script>
+</body>
+</html>

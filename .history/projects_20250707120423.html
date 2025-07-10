@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Projects – Colin Fried</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    #flipbook {
+      width: 90vw; max-width: 800px;
+      height: 60vh; max-height: 600px;
+      margin: 2rem auto; box-shadow: 0 0 10px rgba(0,0,0,.3);
+    }
+    #flipbook .page {
+      width: 100%; height: 100%;
+      display: block; background: white;
+    }
+    #flipbook .page img {
+      width: 100%; height: 100%; object-fit: contain;
+      user-select: none; pointer-events: none;
+    }
+    .flipbook-controls {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    }
+    .flipbook-controls button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+  <header><h1>Colin Fried</h1></header>
+  <nav>
+      <div class="heading">
+        <!--<h4>Navigation Bar</h4>-->
+      </div>
+      <ul class="nav-links">
+        <li><a href="../website.html">Home</a></li>
+        <li><a class="active" href="about.html">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  <main>
+    <h1>My Flipbook</h1>
+    <div id="flipbook"></div>
+  </main>
+  
+</div>
+
+
+  <!-- jQuery & Turn.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/0.11/turn.min.js"></script>  <!-- :contentReference[oaicite:0]{index=0} -->
+  
+
+  <!--<div id="flipbook">
+    <div class="page"><img src="images/resume-pages-0.png" alt="Page 1"></div>
+    <div class="page"><img src="images/resume-pages-1.png" alt="Page 2"></div>
+  </div>-->
+
+<script>
+  $(function() {
+    const totalPages = 2;  // update as needed
+    const $fb = $('#flipbook');
+
+    // Dynamically add pages
+    for (let i = 0; i < totalPages; i++) {
+      const imgPath = `images/resume-pages-${i}.png`;
+      $fb.append(
+        `<div class="page">
+           <img src="${imgPath}" alt="Page ${i+1}">
+         </div>`
+      );
+    }
+
+    // Initialize Turn.js
+    $fb.turn({
+      width: 800,
+      height: 600,
+      autoCenter: true,
+      gradients: true,
+      elevation: 50
+    });
+
+    // Navigation buttons
+    $('#prev-page').click(function () {
+      $fb.turn('previous');
+    });
+    $('#next-page').click(function () {
+      $fb.turn('next');
+    });
+
+    // Arrow key support
+    $(document).keydown(function(e) {
+      if (e.key === "ArrowLeft") {
+        $fb.turn('previous');
+      } else if (e.key === "ArrowRight") {
+        $fb.turn('next');
+      }
+      
+    });
+  });
+  
+</script>
+
+
+  <footer>© 2025 Colin Fried</footer>
+</body>
+</html>

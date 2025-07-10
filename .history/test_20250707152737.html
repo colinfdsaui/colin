@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Flipbook Demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 1rem;
+    }
+    #flipbook {
+  width: 800px;
+  height: 600px;
+  margin: 2rem auto;
+  position: relative;
+  background: #fff;
+}
+
+/* Default two‑page layout; Turn.js manages positioning */
+#flipbook .page {
+  /* no manual float/width needed */
+}
+
+/* Single‑page hack: when .single-page, center Page 1 */
+#flipbook.single-page .page:nth-child(1) {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;   /* each page is half the container in double mode */
+}
+
+/* Hide the second page entirely when single */
+#flipbook.single-page .page:nth-child(2) {
+  display: none;
+}
+
+/* Image zoom */
+#flipbook .page img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  cursor: zoom-in;
+}
+#flipbook .page img.zoomed {
+  transform: scale(2);
+  cursor: zoom-out;
+}
+
+  </style>
+</head>
+<body>
+
+  <h1>My Two‑Page Flipbook</h1>
+  <div id="flipbook"></div>
+
+  <div class="flipbook-controls">
+    <button id="prev-page">◀ Prev</button>
+    <button id="next-page">Next ▶</button>
+  </div>
+
+  <!-- 1) jQuery & Turn.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/0.11/turn.min.js"></script>
+  <script>
+    $(function() {
+      const pages = ['images/resume-pages-0.png', 'images/resume-pages-1.png'];
+      const $fb = $('#flipbook');
+      let current = 1;    // 1 or 2
+      let zoomed = false;
+
+      // helper: build and init
+      function initFlip(displayMode, startPage) {
+        // clear and append pages
+        $fb.empty();
+        pages.forEach(src => {
+          $fb.append(`<div class="page"><img src="${src}"></div>`);
+        });
+        // init Turn.js
+        $fb.turn({
+          width:  800,
+          height: 600,
+          display: displayMode,
+          page:    startPage,
+          autoCenter: true,
+          gradients:  true,
+          elevation:  50
+        });
+        current = startPage;
+      }
+
+      // initial: single page, page 1
+      initFlip('single', 1);
+
+      // Next button / right arrow
+      $('#next-page').on('click', () => flipForward());
+      $(document).on('keydown', e => { if (e.key==='ArrowRight') flipForward(); });
+
+      function flipForward() {
+        if (current === 1) {
+          $fb.turn('destroy');
+          initFlip('double', 2);
+        }
+      }
+
+      // Prev button / left arrow
+      $('#prev-page').on('click', () => flipBackward());
+      $(document).on('keydown', e => { if (e.key==='ArrowLeft') flipBackward(); });
+
+      function flipBackward() {
+        if (current === 2) {
+          $fb.turn('destroy');
+          initFlip('single', 1);
+        }
+      }
+
+      // Zoom on click
+      $fb.on('click', () => {
+        zoomed = !zoomed;
+        $fb.toggleClass('zoomed', zoomed);
+      });
+    });
+  </script>
+</body>
+</html>

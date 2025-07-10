@@ -1,0 +1,141 @@
+/* ====================
+   Global & layout
+   ==================== */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header, footer {
+  background: #333;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+nav {
+  background: #444;
+}
+nav .nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+nav .nav-links li {
+  margin: 0 1rem;
+}
+nav .nav-links a {
+  color: white;
+  text-decoration: none;
+}
+nav .nav-links .active {
+  text-decoration: underline;
+}
+
+main {
+  padding: 1rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+footer {
+  font-size: 0.9rem;
+}
+
+/* ====================
+   Flipbook container
+   ==================== */
+#flipbook {
+  width: 800px;
+  height: 600px;
+  margin: 2rem auto;
+  border: 1px solid #ccc;
+  background: #fff;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Two‑page layout */
+#flipbook .page {
+  width: 50%;
+  height: 100%;
+  float: left;
+}
+
+/* Single‑page hack: hide the even pages */
+#flipbook.hide-spread .page:nth-child(2n) {
+  display: none;
+}
+
+/* Single‑page hack: full‑width & centered */
+#flipbook.hide-spread .page {
+  width: 100%;
+  float: none;
+  margin: 0 auto;
+}
+
+/* Image styling */
+#flipbook .page img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.flipbook-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.flipbook-controls button {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+#flipbook .page {
+    background: white;
+}
+#flipbook .page img {
+    width: 50%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+/* Hide the right‑hand page on page 1 */
+#flipbook.hide-spread .page:nth-child(2n) {
+  display: none;
+}
+
+/* Override for single‑page: make the remaining page full‑width and centered */
+#flipbook.hide-spread .page {
+  width: 100%;     /* full container width */
+  float: none;     /* cancel float */
+  margin: 0 auto;  /* center if any extra space */
+}
+.fb-controls {
+  text-align: center;
+  margin-top: 1rem;
+}
+.fb-controls button {
+  margin: 0 .5rem;
+  padding: .5rem 1rem;
+}
+.flipbook-controls button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+/* hide even‑numbered pages (the “right side”) by default */
+#flipbook.hide-spread .page:nth-child(2n) {
+  display: none;
+}
+
+/* once you remove hide‑spread, both pages will be visible */
+#flipbook.show-spread .page:nth-child(2n) {
+  display: block;
+}

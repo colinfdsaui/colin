@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Projects – Colin Fried</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="scripts/main.js" defer></script>
+  <link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+  />
+
+  <style>
+  </style>
+
+  <!-- Global MathJax config -->
+  <script>
+      window.MathJax = {
+          tex: {
+              inlineMath: [['$', '$'], ['\\(', '\\)']],
+              displayMath: [['\\[', '\\]'], ['$$', '$$']],
+              processEscapes: true
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    
+    <!-- Load MathJax v3 -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
+</head>
+
+
+<body>
+    <!-- HEADER & NAV belong in <body>, not in <head> -->
+        <header>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../website.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a class="active" href="projects.html">Projects</a></li>
+                    <li><a href="test.html">Contact</a></li>
+                </ul>
+                <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+            </nav>
+        </header>
+        
+        <main>
+            <h1>3D Printed Hydrogel Optimization</h1>
+            
+            <p>
+                test
+            </p>
+            
+            <!-- Zoom Modal -->
+            <div id="zoom-modal">
+              <img id="zoom-img" src="" alt="Zoomed Page"/>
+            </div>
+
+  </main>
+
+
+  <footer>©2025 Colin Fried</footer>
+</body>
+</html>

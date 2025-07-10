@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="styles.css" />
+  <title>PDF Embed Test – Colin Fried</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 1rem;
+    }
+    main {
+      max-width: 800px;
+      margin: auto;
+    }
+    /* make sure footer is visible */
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      padding: 1rem 0;
+      background: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>PDF Embed Test</h1>
+    <p>If this works, you should see the PDF below:</p>
+
+    <!-- 1) embed tag -->
+    <embed
+      src="pdfs/GoodnightSweet2e.pdf"
+      type="application/pdf"
+      width="100%"
+      height="600px"
+    />
+
+    <!-- alternatively, you can use an iframe:
+    <iframe
+      src="pdfs/GoodnightSweet2e.pdf"
+      width="100%"
+      height="600px"
+    ></iframe>
+    -->
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Colin Fried</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,172 @@
+/* ====================
+   Global & layout
+   ==================== */
+   /* 1) Define your palette once, at the top of your main stylesheet */
+:root {
+  /* ─── Aqua Palette ───────────────────────────────────────────────────────── */
+  /* Light backgrounds */
+  --aqua-bg-primary:      #c0d9ea; /* window background */
+  --aqua-bg-secondary:    #e3eff7; /* sidebar / panels */
+  --aqua-bg-highlight:    #fffffd; /* key UI surfaces */
+
+  /* Accent blues */
+  --aqua-accent:          #8db9e3; /* buttons, active tabs */
+  --aqua-accent-dark:     #6b8cb4; /* hover, active state */
+
+  /* Text */
+  --aqua-text-primary:    #000000; /* body text */
+  --aqua-text-secondary:  #3b3b3b; /* captions, secondary labels */
+  --aqua-text-inverse:    #ffffff; /* on blue buttons, etc */
+
+  /* Borders / dividers */
+  --aqua-border:          #a0c0d2; 
+
+  /* Shadows (optional) */
+  --aqua-shadow:          rgba(0, 0, 0, 0.1);
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color:            var(--color-text);
+}
+
+header, footer {
+  background: #333;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+nav {
+  background: #444;
+}
+nav .nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+nav .nav-links li {
+  margin: 0 1rem;
+}
+nav .nav-links a {
+  color: white;
+  text-decoration: none;
+}
+nav .nav-links .active {
+  text-decoration: underline;
+}
+
+main {
+  padding: 1rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+footer {
+  font-size: 0.9rem;
+}
+
+/* ====================
+   Flipbook container
+   ==================== */
+#flipbook {
+  width: 800px;
+  height: 600px;
+  margin: 2rem auto;
+  position: relative;
+  background: #fff;
+}
+
+/* Default two‑page layout; Turn.js manages positioning */
+#flipbook .page {
+  /* no manual float/width needed */
+}
+
+/* Single‑page hack: when .single-page, center Page 1 */
+#flipbook.single-page .page:nth-child(1) {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;   /* each page is half the container in double mode */
+}
+
+/* Hide the second page entirely when single */
+#flipbook.single-page .page:nth-child(2) {
+  display: none;
+}
+
+/* Image zoom */
+#flipbook .page img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  cursor: zoom-in;
+}
+#flipbook .page img.zoomed {
+  transform: scale(2);
+  cursor: zoom-out;
+}
+
+/* Flipbook wrapper */
+    #flipbook-wrapper {
+      width: 800px;
+      height: 600px;
+      margin: 2rem auto;
+      position: relative;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    /* Mask (page‑1 illusion) */
+    #mask {
+      position: absolute; top:0; left:0; right:0; bottom:0;
+      pointer-events: none;
+      background: linear-gradient(
+        to right,
+        #fff 0%, rgba(255,255,255,0) 40%,
+        rgba(255,255,255,0) 60%, #fff 100%
+      );
+      display: none;
+    }
+
+    /* Turn.js pages */
+    #flipbook .page {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      background: grey;
+    }
+    #flipbook .page img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      cursor: pointer;
+    }
+
+    /* Full‑screen zoom modal */
+    #zoom-modal {
+      display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgb(0, 0, 0.8);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;     /* allow scrollbars */
+  cursor: zoom-out;
+    }
+    #zoom-modal img {
+       /* Let JS set explicit size */
+  width: 150%;
+  height: 150%;
+  transform: translate(-15%);
+  object-fit: contain;
+    }

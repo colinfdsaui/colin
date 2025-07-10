@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Flipbook‑Viewer UMD Example</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- 1) PDF.js core library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.338/pdf.min.js"></script>
+<script>
+  // 2) Tell PDF.js where to find its worker script
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.338/pdf.worker.min.js";
+</script>
+
+
+  <style>
+    body { margin:0; font-family:sans-serif; text-align:center; }
+    #flipbook { 
+      width: 800px; 
+      height: 600px; 
+      margin: 2rem auto; 
+      border: 1px solid #ccc;
+      position: relative;
+    }
+    .fb-controls { margin: 1rem auto; }
+    .fb-controls button { margin: 0 .5rem; padding: .5rem 1rem; }
+    footer { padding:1rem; background:#f4f4f4; position:fixed; bottom:0; width:100%; }
+  </style>
+</head>
+<body>
+
+  <h1>Flipbook‑Viewer UMD Example</h1>
+  <div id="flipbook"></div>
+  <div class="fb-controls">
+    <button id="prev">◀ Prev</button>
+    <button id="zoom">🔍 Zoom</button>
+    <button id="next">Next ▶</button>
+  </div>
+
+  <!-- PDF.js UMD build (defines window.pdfjsLib) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.338/pdf.js"></script>
+  <script>
+    // point the worker to the minified worker script on the same CDN
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.338/pdf.worker.min.js';
+  </script>
+
+  <!-- flipbook‑viewer UMD bundle (defines window.flipbook) -->
+  <script src="https://unpkg.com/flipbook-viewer@1.6.1/dist/flipbook-viewer.js"></script>
+
+  <script>
+    // wait until PDF.js is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1) load the PDF
+      const loadingTask = pdfjsLib.getDocument('pdfs/GoodnightSweet2e.pdf').promise;
+
+      // 2) wrap it in the "book" interface flipbook‑viewer expects
+      const pdfBook = {
+        numPages: async () => (await loadingTask).numPages,
+        getPage: async (n, cb) => {
+          const pdf = await loadingTask;
+          const page = await pdf.getPage(n);
+          const vp = page.getViewport({ scale: 1.5 });
+          const canvas = document.createElement('canvas');
+          canvas.width = vp.width;
+          canvas.height = vp.height;
+          await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+          // pass the finished <canvas> back
+          cb(canvas);
+        }
+      };
+
+      // 3) initialize the flipbook
+      // flipbook is on window.flipbook per UMD
+      window.flipbook(
+        pdfBook,
+        'flipbook',
+        { width: 800, height: 600 },
+        (err, viewer) => {
+          if (err) {
+            console.error('Flipbook init error:', err);
+            return;
+          }
+          console.log('Flipbook ready, pages:', viewer.page_count);
+          // wire up controls
+          document.getElementById('prev').onclick = () => viewer.flip_back();
+          document.getElementById('next').onclick = () => viewer.flip_forward();
+          document.getElementById('zoom').onclick = () => viewer.zoom();
+        }
+      );
+    });
+  </script>
+
+  <footer>
+    © 2025 Colin Fried
+  </footer>
+</body>
+</html>

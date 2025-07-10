@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="styles.css"/>
+  
+  <style>
+    body {
+      text-align: center;
+    }
+    
+  </style>
+</head>
+<body>
+
+  <div id="flipbook-wrapper">
+    <div id="flipbook"></div>
+  </div>
+
+  <div class="button">
+    <button id="prev"> ❮</button>
+    <button id="next"> ❯</button>
+  </div>
+
+  <!-- Zoom Modal -->
+  <div id="zoom-modal">
+    <img id="zoom-img" src="" alt="Zoomed Page"/>
+  </div>
+
+  <div class="flipbook-controls">
+  <button id="prev-page">◀ Prev</button>
+
+  <!-- New “Go to” field -->
+  <label for="goto-page-input">Go to:</label>
+  <input 
+    type="number" 
+    id="goto-page-input" 
+    min="1" 
+    max="204" 
+    placeholder="Page #"
+    style="width: 4em; padding: 0.25em; margin: 0 0.5em;"
+  />
+  <button id="goto-page">Jump ▶</button>
+
+  <button id="next-page">Next ▶</button>
+</div>
+
+  <!-- jQuery & Turn.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/0.11/turn.min.js"></script>
+  <script>
+    $(function() {
+      const pages = [
+        'images/resume-pages-0.png',
+        'images/resume-pages-1.png'
+      ];
+      const $fb     = $('#flipbook');
+      const $mask   = $('#mask');
+      const $modal  = $('#zoom-modal');
+      const $zoomImg = $('#zoom-img');
+      let currentZoomIndex = null;
+
+      // Inject pages
+      pages.forEach(src => {
+        $fb.append(`<div class="page"><img src="${src}"></div>`);
+      });
+
+      // Initialize in single‑page mode
+      $fb.turn({
+        width: 800,
+        height: 530,
+        display: 'double',
+        page: 1,
+        autoCenter: true,
+        gradients: true,
+        elevation: 80,
+        acceleration: true        
+      });
+
+      // Prev/Next controls
+      $('#prev').click(() => $fb.turn('previous'));
+      $('#next').click(() => $fb.turn('next'));
+      $(document).keydown(e => {
+        if (e.key === 'ArrowLeft')  $fb.turn('previous');
+        if (e.key === 'ArrowRight') $fb.turn('next');
+      });
+
+      // Full‑screen zoom modal
+      $fb.on('click', '.page img', function(e) {
+        e.stopPropagation();
+        $zoomImg.attr('src', this.src);
+        $modal.show();  // shows as flex with scrollbars
+      });
+      $modal.on('click', () => $modal.hide());
+
+      $(document).on('keydown', function(e) {
+    if (e.which === 27 && $modal.is(':visible')) {  // 27 = Esc
+      $modal.hide();
+    }
+    
+
+    });
+});
+
+  </script>
+</body>
+</html>

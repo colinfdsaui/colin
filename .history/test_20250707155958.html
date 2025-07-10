@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Simplest Flipbook</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 1rem;
+    }
+    /* Flipbook outer wrapper */
+    #flipbook-wrapper {
+      width: 800px;
+      height: 600px;
+      margin: 2rem auto;
+      position: relative;
+      border: empty;
+      overflow: hidden; /* hide overflow */
+      background: #fff;
+    }
+    /* Buttons */
+    .controls {
+      margin-top: 1rem;
+    }
+    .controls button {
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
+      cursor: pointer;
+      border: 1px solid #888;
+      background:rgb(77, 208, 223);
+      border-radius: 4px;
+    }
+    .controls button:hover {
+      background:rgb(115, 162, 224);
+    }
+
+    /* Each page container is scrollable for zoom/pan */
+    #flipbook .page {
+      overflow: auto !important;
+      /* Let Turn.js handle positioning and size */
+    }
+    /* Zoomed image inside page */
+    #flipbook .page img {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.3s ease;
+      cursor: arrow;
+    }
+    #flipbook .page img.zoomed {
+      overflow: auto !important;
+      transform: scale(2);
+      cursor: zoom-out;
+    }
+
+    /* Center page‑1 overlay mask */
+    #mask {
+      position: absolute;
+      top: 100; left: 1000; right: 0; bottom: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        to right,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,0) 40%,
+        rgba(255,255,255,0) 60%,
+        rgba(255,255,255,1) 100%
+      );
+      display: none; /* shown only on page 1 */
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Flipbook (2 pages)</h1>
+  <div id="flipbook-wrapper">
+    <div id="flipbook"></div>
+    <div id="mask"></div>
+  </div>
+
+  <div class="controls">
+    <button id="prev">◀ Prev</button>
+    <button id="next">Next ▶</button>
+  </div>
+
+  <!-- jQuery & Turn.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/0.11/turn.min.js"></script>
+  <script>
+  $(function() {
+    const pages = [
+      'images/resume-pages-0.png',
+      'images/resume-pages-1.png'
+    ];
+    const $fb = $('#flipbook');
+    const $mask = $('#mask');
+
+    // Inject pages
+    pages.forEach(src => {
+      $fb.append(`<div class="page"><img src="${src}"></div>`);
+    });
+
+    // Initialize Turn.js
+    $fb.turn({
+      width: 800,
+      height: 600,
+      display: 'double',
+      page: 1,
+      autoCenter: true,
+      gradients: true,
+      elevation: 50
+    });
+
+    // Show mask (center illusion) on page 1, hide otherwise
+    function updateMask(page) {
+      if (page === 1) $mask.show();
+      else            $mask.hide();
+    }
+    $fb.on('turned', (e, page) => updateMask(page));
+    updateMask(1);
+
+    // Prev/Next buttons
+    $('#prev').click(() => $fb.turn('previous'));
+    $('#next').click(() => $fb.turn('next'));
+
+    // Arrow keys
+    $(document).keydown(e => {
+      if (e.key === 'ArrowLeft')  $fb.turn('previous');
+      if (e.key === 'ArrowRight') $fb.turn('next');
+    });
+
+    // Zoom & pan: click the img
+    $fb.on('click', '.page img', function(e) {
+      e.stopPropagation();
+      $(this).toggleClass('zoomed');
+    });
+  });
+  </script>
+</body>
+</html>

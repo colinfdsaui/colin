@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="styles.css" />
+
+<!-- Header / Nav -->
+<header><h1>Colin Fried</h1></header>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects – Colin Fried</title>
+
+  <!-- flipbook‐viewer styles (none are shipped by default, so you’ll need minimal styling yourself) -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/flipbook-viewer@1.6.1/dist/flipbook-viewer.css"
+/>
+
+<!-- PDF.js (to load & render the PDF pages) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.338/pdf.min.js"></script>
+<script>
+  // point PDF.js at its worker
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.338/pdf.worker.min.js";
+</script>
+
+<!-- the flipbook‐viewer itself -->
+<script type="module">
+  import { init as flipbook } from "https://unpkg.com/flipbook-viewer@1.6.1/dist/flipbook-viewer.js";
+
+  // --- 2. Define a “book” that the viewer can consume ---
+  // We wrap your PDF in an object with numPages() and getPage(n, cb) methods :contentReference[oaicite:0]{index=0}
+  const pdfUrl = "pdfs/GoodnightSweet2e.pdf"; 
+  let _pdfPromise = pdfjsLib.getDocument(pdfUrl).promise;
+
+  const pdfBook = {
+    numPages: async () => {
+      const pdf = await _pdfPromise;
+      return pdf.numPages;
+    },
+    getPage: async (n, cb) => {
+      const pdf = await _pdfPromise;
+      const page = await pdf.getPage(n);
+      const viewport = page.getViewport({ scale: 1.5 });
+      const canvas = document.createElement("canvas");
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+      // once rendered, hand back the <canvas> as the page image
+      cb(canvas);
+    }
+  };
+
+  // --- 3. Kick off the flipbook ---
+  // (You can pass in an options object as 3rd arg; here we just use defaults.)
+  document.addEventListener("DOMContentLoaded", () => {
+    flipbook(pdfBook, "flipbook", {}, (err, viewer) => {
+      if (err) {
+        console.error("Flipbook init error:", err);
+        return;
+      }
+      console.log("Flipbook ready, pages:", viewer.page_count);
+      // example controls:
+      document.getElementById("next").onclick = () => viewer.flip_forward();
+      document.getElementById("prev").onclick = () => viewer.flip_back();
+      document.getElementById("zoom").onclick = () => viewer.zoom();
+    });
+  });
+</script>
+
+
+</head>
+<body>
+  <nav>
+    <ul class="nav-links">
+      <li><a href="website.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a class="active" href="projects.html">Projects</a></li>
+      <li><a href="test.html">Contact</a></li>
+    </ul>
+  </nav>
+  
+  <main>
+    <div class="body-text"><h1>Goodnight Sweet <h3>by John Wentworth</h3></h1></div>
+      <div class="_df_book" id="flipbok_example" source="pdfs/GoodnightSweet2e.pdf"></div>
+
+    <div class="body-text"><h1>Coursework</h1></div>
+  </main>
+
+  <!-- flipbook container -->
+<div id="flipbook" style="width:800px; height:600px; margin:2rem auto;"></div>
+
+<!-- optional nav buttons -->
+<div style="text-align:center; margin:1rem;">
+  <button id="prev">◀ Prev</button>
+  <button id="zoom">🔍 Zoom</button>
+  <button id="next">Next ▶</button>
+</div>
+
+</body>
+</html>
+
+<!-- Footer -->
+<footer>
+    <p> © 2025 Colin Fried</p>
+</footer>

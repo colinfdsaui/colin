@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects – Colin Fried</title>
+
+  <!-- Google Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Your CSS (make sure this path is right) -->
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Quick inline check: give the flipbook container a size */
+    #flipbook { width: 800px; height: 600px; margin: 2rem auto; }
+    #flipbook .page { background: white; }
+  </style>
+</head>
+<body>
+
+  <header><h1>Colin Fried</h1></header>
+
+  <nav>
+    <ul class="nav-links">
+      <li><a href="website.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a class="active" href="projects.html">Projects</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="body-text">
+      <h1>This is the Projects page!</h1>
+    </section>
+
+    <!-- Flipbook container -->
+    <div id="flipbook"></div>
+  </main>
+
+  <footer>
+    <p>© 2025 Colin Fried</p>
+  </footer>
+
+  <main>
+  <h2>Flipbook Sanity Check</h2>
+
+  <!-- static test pages -->
+  <div id="flipbook">
+    <div class="page"><h3>Page 1</h3></div>
+    <div class="page"><h3>Page 2</h3></div>
+    <div class="page"><h3>Page 3</h3></div>
+    <div class="page"><h3>Page 4</h3></div>
+  </div>
+</main>
+
+<!-- make sure you still have jQuery & Turn.js included -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+<script>
+  $(function() {
+    $('#flipbook').turn({
+      width: 400,
+      height: 300,
+      autoCenter: true,
+      gradients: true
+    });
+  });
+</script>

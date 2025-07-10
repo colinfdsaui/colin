@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- … your head as before … -->
+  <style>
+    /* Ensure the flipbook container is visible */
+    #flipbook { width: 400px; height: 300px; margin: 2rem auto; }
+    #flipbook .page { background: white; }
+  </style>
+</head>
+<body>
+  <!-- … header/nav … -->
+
+  <main>
+    <h2>Flipbook Sanity Check</h2>
+
+    <!-- static test pages -->
+    <div id="flipbook">
+      <div class="page"><h3>Page 1</h3></div>
+      <div class="page"><h3>Page 2</h3></div>
+      <div class="page"><h3>Page 3</h3></div>
+      <div class="page"><h3>Page 4</h3></div>
+    </div>
+  </main>
+
+  <!-- … footer … -->
+
+  <!-- jQuery & Turn.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+  <script>
+    $(function() {
+      $('#flipbook').turn({
+        width: 400,
+        height: 300,
+        autoCenter: true,
+        gradients: true
+      });
+    });
+  </script>
+</body>
+</html>

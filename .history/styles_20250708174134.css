@@ -1,0 +1,379 @@
+/* ====================
+   Global & layout
+   ==================== */
+
+/* 1) Define your palette once, at the top of your main stylesheet */
+:root {
+  /* ─── Aqua Palette ───────────────────────────────────────────────────────── */
+  /* Light backgrounds */
+  --aqua-bg-primary:      #c0d9ea; /* window background */
+  --aqua-bg-secondary:    #e3eff7; /* sidebar / panels */
+  --aqua-bg-highlight:    #fffffd; /* key UI surfaces */
+
+  /* Accent blues */
+  --aqua-accent:          #8db9e3; /* buttons, active tabs */
+  --aqua-accent-dark:     #6b8cb4; /* hover, active state */
+
+  /* Text */
+  --aqua-text-primary:    #000000; /* body text */
+  --aqua-text-secondary:  #3b3b3b; /* captions, secondary labels */
+  --aqua-text-inverse:    #ffffff; /* on blue buttons, etc */
+
+  /* Borders / dividers */
+  --aqua-border:          #a0c0d2;
+
+  /* Shadows (optional) */
+  --aqua-shadow:          rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin:            0;
+  padding:           0;
+  font-family:       "Lucida Grande", -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color:  var(--aqua-bg-primary);
+  color:             var(--aqua-text-primary);
+}
+
+/* Header & Footer with gradient, borders & shadow */
+header,
+footer {
+  background-color:  var(--aqua-bg-secondary);
+  background-image:  linear-gradient(
+                       to bottom,
+                       rgba(255,255,255,0.8),
+                       var(--aqua-bg-secondary)
+                     );
+  background-repeat: no-repeat;
+  background-size:   cover;
+  border-bottom:     1px solid var(--aqua-border);
+  box-shadow:        0 1px 3px var(--aqua-shadow);
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: left;
+}
+
+main {
+  padding:    1rem;
+  max-width:  1000px;
+  margin:     auto;
+}
+
+footer {
+  font-size:    0.9rem;
+  color:        var(--aqua-text-secondary);
+}
+
+/* ====================
+   Links as Buttons
+   ==================== */
+
+/* Turn every <a> into a button */
+a {
+  display:          inline-block;
+  padding:          0.5em 1em;
+  margin:           0.25em 0;
+  background-color: var(--aqua-accent);
+  color:            var(--aqua-text-inverse);
+  text-decoration:  none;
+  border:           1px solid var(--aqua-accent-dark);
+  border-radius:    4px;
+  font-family:      inherit;
+  font-size:        1rem;
+  line-height:      1.2;
+  cursor:           pointer;
+  box-shadow:       0 1px 2px var(--aqua-shadow);
+  transition:       background-color 0.2s ease,
+                    transform        0.1s ease;
+}
+
+/* ====================
+   Aqua‑style pill buttons for <a>
+   ==================== */
+a {
+  /* Reset/link basics */
+  display:          inline-block;
+  position:         relative;      /* for ::before */
+  text-decoration:  none;
+  color:            var(--aqua-text-inverse);
+  font-family:      inherit;
+  font-size:        1rem;
+  line-height:      1.5;
+  padding:          0.4em 1.2em;   /* taller for pill shape */
+  margin:           0.25em 0;
+
+  /* Pill shape + border */
+  border-radius:    9999px;
+  border:           1px solid rgba(75, 93, 132, 0.6);
+
+  /* Gradient background: top → mid → bottom */
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.8) 0%,       /* bright top */
+      rgba(141,185,227,0.9) 50%,      /* mid‑blue */
+      rgba(110,160,210,1) 100%        /* darker bottom */
+    );
+
+  /* Depth: inner shadow + outer glow */
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.6),   /* light inner highlight */
+    inset 0 -2px 4px rgba(0,0,0,0.2),        /* dark inner shadow */
+    0 2px 6px rgba(0,0,0,0.2);               /* outer drop shadow */
+
+  cursor:           pointer;
+  transition:       transform 0.1s ease,
+                    box-shadow 0.2s ease;
+}
+
+/* the glossy “shine” stripe */
+a::before {
+  content: "";
+  position: absolute;
+  top:    4%;
+  left:   5%;
+  width:  90%;
+  height: 45%;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* hover / focus lift */
+a:hover,
+a:focus {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.6),
+    inset 0 -2px 4px rgba(0,0,0,0.3),
+    0 4px 8px rgba(0,0,0,0.25);
+}
+
+/* active (pressed‑in) state */
+a:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,0.2),
+    0 1px 3px rgba(0,0,0,0.15);
+}
+
+/* ====================
+   Global Button Styles (apply to every <button>)
+   ==================== */
+button {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.8) 0%,
+      rgba(141,185,227,0.9) 50%,
+      rgba(110,160,210,1)   100%
+    );
+  color:            var(--aqua-text-inverse);
+  border:           1px solid rgba(75, 93, 132, 0.6);
+  border-radius:    9999px;
+  padding:          0.4em 1.2em;
+  font-family:      inherit;
+  font-size:        1rem;
+  line-height:      1.5;
+  cursor:           pointer;
+  position:         relative;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.6),
+    inset 0 -2px 4px rgba(0,0,0,0.2),
+    0 2px 6px rgba(0,0,0,0.2);
+  transition:       transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  top:    4%;
+  left:   5%;
+  width:  90%;
+  height: 45%;
+  border-radius: inherit;
+  background: rgba(255,255,255,0.4);
+}
+
+button:hover,
+button:focus {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.6),
+    inset 0 -2px 4px rgba(0,0,0,0.3),
+    0 4px 8px rgba(0,0,0,0.25);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,0.2),
+    0 1px 3px rgba(0,0,0,0.15);
+}
+
+.panel {
+  background-color: var(--aqua-bg-highlight);
+  border:           1px solid var(--aqua-border);
+  padding:          1em;
+  border-radius:    6px;
+}
+
+/* ====================
+   Flipbook container (existing)
+   ==================== */
+#flipbook,
+#flipbook-wrapper {
+  width:       800px;
+  height:      600px;
+  margin:      2rem auto;
+  overflow:    hidden;
+  background:  var(--aqua-bg-primary);
+  border:      1px solid var(--aqua-border);
+  box-shadow:  0 2px 4px var(--aqua-shadow);
+}
+
+/* scoped only to that instance */
+#flipbook-wrapper.custom-bg #flipbook {
+  background: url("pages/dust_jacket_front.png");
+  background-size: contain;
+}
+
+
+#flipbook .page {
+  width:         50%;
+  height:        100%;
+  float:         left;
+  overflow:      hidden;
+  background:    var(--aqua-bg-highlight);
+  border-right:  1px solid var(--aqua-border);
+  border: 1px solid rgba(0, 0, 0, 0.05); /* soft edge */
+}
+
+#flipbook .page.dummy {
+  background: empty;
+  pointer-events: none;
+}
+
+#flipbook .page img {
+  width:       100%;
+  height:      100%;
+  object-fit:  scale;
+  transition:  transform 0.3s ease;
+}
+
+/* Zoomed page image */
+#flipbook .page img.zoomed {
+  transform: scale(2);
+  cursor:    zoom-out;
+}
+
+/* Full-screen zoom modal */
+#zoom-modal {
+  display:         none;
+  position:        fixed;
+  inset:           0;
+  background:      rgba(0, 0, 0, 0.8);
+  z-index:         9999;
+  align-items:     center;
+  justify-content: center;
+  overflow:        auto;
+}
+
+#zoom-modal img {
+  width:       150%;
+  height:      150%;
+  transform:   translate(-15%);
+  object-fit:  contain;
+}
+
+.flipbook-controls {
+  display:        flex;
+  justify-content: center;  /* center items horizontally */
+  align-items:    center;    /* center items vertically */
+  flex-wrap:      wrap;      /* allow items to wrap onto multiple lines */
+  gap:            0.5rem;    /* space between items */
+  margin:         1rem 0;    /* optional vertical spacing around the controls */
+}
+
+/* Optional: normalize spacing on every direct child (buttons, inputs, labels) */
+.flipbook-controls > * {
+  margin: 0.25rem;
+}
+
+/* ── Shelf Container ───────────────────────────────────────────────────────── */
+.shelf {
+  position:       relative;
+  padding-bottom: 2rem;         /* room for the plank */
+  margin:         2rem 0;       /* vertical spacing */
+}
+
+/* ── Shelf Plank ───────────────────────────────────────────────────────────── */
+.shelf::after {
+  content:        "";
+  position:       absolute;
+  bottom:         0;
+  left:           5%;
+  width:          90%;
+  height:         1rem;         /* thickness of the plank */
+  background:     linear-gradient(
+                     to bottom, 
+                     #d2a679 0%,      /* lighter top */
+                     #a9732d 100%     /* darker bottom */
+                   );
+  box-shadow:     inset 0 2px 4px rgba(0,0,0,0.3),
+                  0 2px 4px rgba(0,0,0,0.2);
+  border-radius:  4px;
+}
+/* ── Cover Gallery ─────────────────────────────────────────────────────────── */
+.book-grid {
+  display:            grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap:                1rem 2rem;
+  padding:            2rem;
+  justify-items:      center;
+}
+
+.book-item {
+  display:            flex;
+  flex-direction:     column;
+  align-items:        center;
+  text-decoration:    none;
+  color:              var(--aqua-text-primary);
+  transition:         transform 0.2s ease, box-shadow 0.2s ease;
+  background:      none !important;
+  border:          none !important;
+  box-shadow:      none !important;
+  padding:         0 !important;
+  position:        static !important;  /* neutralize position:relative */
+  margin-bottom:  1.25rem;     /* pulls the image down onto the shelf */
+  transition:     transform 0.2s ease;
+}
+/* Remove the glossy pseudo‑element */
+.book-item::before {
+  content:        none !important;
+}
+
+.book-item img {
+  width:              100%;
+  height:             auto;
+  max-height:         250px; /* adjust to preference */
+  object-fit:         cover;
+  border:             1px solid var(--aqua-border);
+  box-shadow:         0 8px 8px rgba(0,0,0,0.1);
+  border-radius:      5px;
+}
+
+.book-item .book-title {
+  margin-top:         0.5rem;
+  font-size:          0.9rem;
+  text-align:         center;
+}
+
+.book-item:hover {
+  transform:          translateY(-4px);
+  box-shadow:         0 8px 16px rgba(0,0,0,0.15);
+  transform: translateY(-4px);
+}

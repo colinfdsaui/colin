@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+  <!-- Your main stylesheet (make sure this path is correct!) -->
+  <link rel="stylesheet" href="styles.css">
+
+  <title>Projects – Colin Fried</title>
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <h1>Colin Fried</h1>
+  </header>
+
+  <!-- Navigation -->
+  <nav>
+    <ul class="nav-links">
+      <li><a href="website.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a class="active" href="projects.html">Projects</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <section class="body-text">
+      <h1>This is the Projects page!</h1>
+    </section>
+
+    <!-- Flipbook container -->
+    <div id="flipbook"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Colin Fried</p>
+  </footer>
+
+  <!-- Scripts (loaded at end of body for better performance) -->
+  <!-- PDF.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="pdf.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.js';
+  </script>
+  <!-- Turn.js (be sure jQuery is loaded first if required) -->
+  <script src="turn.js"></script>
+  <!-- Your flipbook initialization -->
+  <script src="main.js"></script>
+</body>
+</html>

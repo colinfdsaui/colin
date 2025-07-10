@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects – Colin Fried</title>
+
+  <!-- Google Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Your CSS (make sure this path is right) -->
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Quick inline check: give the flipbook container a size */
+    #flipbook { width: 800px; height: 600px; margin: 2rem auto; }
+    #flipbook .page { background: white; }
+  </style>
+</head>
+<body>
+
+  <header><h1>Colin Fried</h1></header>
+
+  <nav>
+    <ul class="nav-links">
+      <li><a href="website.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a class="active" href="projects.html">Projects</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="body-text">
+      <h1>This is the Projects page!</h1>
+    </section>
+
+    <!-- Flipbook container -->
+    <div id="flipbook"></div>
+  </main>
+
+  <footer>
+    <p>© 2025 Colin Fried</p>
+  </footer>
+
+  <!-- jQuery (needed by Turn.js) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- PDF.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.338/pdf.min.js"></script>
+  <script>
+    // point PDF.js at its worker (also on CDN)
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.338/pdf.worker.min.js';
+  </script>
+
+  <!-- Turn.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+
+  <!-- Your flipbook initialization -->
+  <script>
+    $(function() {
+      // Make sure your PDF file "mydoc.pdf" sits in the same folder as projects.html
+      const url = 'pdfs/Goodnight Sweet 2e.pdf';
+      const flipbook = $('#flipbook');
+
+      // Fetch and render
+      pdfjsLib.getDocument(url).promise.then(pdf => {
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const pageDiv = $('<div class="page"><canvas></canvas></div>');
+          flipbook.append(pageDiv);
+
+          pdf.getPage(i).then(page => {
+            const viewport = page.getViewport({ scale: 1.5 });
+            const canvas = pageDiv.find('canvas')[0];
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            page.render({ canvasContext: canvas.getContext('2d'), viewport });
+          });
+        }
+        // Init Turn.js once all canvases are in the DOM
+        flipbook.turn({
+          width: 800,
+          height: 600,
+          autoCenter: true,
+          gradients: true,
+          elevation: 50
+        });
+      }).catch(err => {
+        console.error('PDF load error:', err);
+        alert('Failed to load PDF.  Check console for details.');
+      });
+    });
+  </script>
+</body>
+</html>

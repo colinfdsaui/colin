@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- … your head as before … -->
+  <style>
+    /* Ensure the flipbook container is visible */
+    #flipbook { width: 400px; height: 300px; margin: 2rem auto; }
+    #flipbook .page { background: white; }
+  </style>
+</head>
+<body>
+  <!-- … header/nav … -->
+
+  <main>
+    <h2>Flipbook Sanity Check</h2>
+
+    <!-- static test pages -->
+    <div id="flipbook">
+      <div class="page"><h3>Page 1</h3></div>
+      <div class="page"><h3>Page 2</h3></div>
+      <div class="page"><h3>Page 3</h3></div>
+      <div class="page"><h3>Page 4</h3></div>
+    </div>
+  </main>
+
+  <!-- … footer … -->
+
+  <script src="js/jquery.min.js"></script>
+        <script src="js/html2canvas.min.js"></script>
+        <script src="js/three.min.js"></script>
+        <script src="js/pdf.min.js"></script>
+
+        <script src="js/3dflipbook.min.js"></script>
